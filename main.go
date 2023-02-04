@@ -20,9 +20,14 @@ func main() {
 	fmt.Println("koneksi datbase berhasil")
 
 	userRepository := user.NewRepository(db)
-	user := user.User{
-		Name: "Test",
-	}
-	userRepository.Save(user)
+	userService := user.NewService(userRepository)
+
+	userInput := user.RegisterUserInput{}
+	userInput.Name = "test dari service"
+	userInput.Email = "testservice@gmail.com"
+	userInput.Occupation = "Developer"
+	userInput.Password = "password"
+
+	userService.RegisterUser(userInput)
 
 }
