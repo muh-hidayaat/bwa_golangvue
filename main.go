@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bwa_golangvue/handler"
 	"bwa_golangvue/user"
 	"fmt"
 	"log"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -22,12 +24,12 @@ func main() {
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
 
-	userInput := user.RegisterUserInput{}
-	userInput.Name = "test dari service"
-	userInput.Email = "testservice@gmail.com"
-	userInput.Occupation = "Developer"
-	userInput.Password = "password"
+	userHandler := handler.NewUserHandler(userService)
 
-	userService.RegisterUser(userInput)
+	router := gin.Default()
+	api := router.Group("/api/v1")
 
+	api.POST("/users", userHandler.RegisterUser)
+
+	router.Run()
 }
