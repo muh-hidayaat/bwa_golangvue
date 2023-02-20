@@ -3,7 +3,7 @@ package main
 import (
 	"bwa_golangvue/handler"
 	"bwa_golangvue/user"
-	"fmt"
+
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -19,8 +19,6 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	fmt.Println("koneksi datbase berhasil")
-
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
 
@@ -30,6 +28,9 @@ func main() {
 	api := router.Group("/api/v1")
 
 	api.POST("/users", userHandler.RegisterUser)
+	api.POST("/sessions", userHandler.Login)
+	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
+	api.POST("/avatars", userHandler.UploadAvatar)
 
 	router.Run()
 }
